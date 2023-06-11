@@ -1,25 +1,32 @@
-import pyaudio as pa
-import numpy as np
-import wave
+import pygame as pg
+from pygame import mixer
+
+pg.init()
+pg.mixer.set_num_channels(50)
+timer = pg.time.Clock()
+fps = 60
+screen = pg.display.set_mode([800,640])
+pg.display.set_caption("Synthesizer")
+
+keys = ['a','s','d','f','g','h','j']
+files = ["C4","D4","E4","F4","G4","A4","B4"]
+notes = []
+
+for f in files:
+    notes.append(mixer.Sound(f'python/assets/{f}.wav'))
 
 
-p = pa.PyAudio()
+while True:
+    timer.tick(fps)
+    screen.fill('black')
+    for event in pg.event.get():
 
+        if event.type == pg.QUIT:
+            break
+        elif event.type == pg.TEXTINPUT:
+            for i,k in enumerate(keys):
+                if k in event.text:
+                    notes[i].play(0,1000)
+    pg.display.flip()
 
-freq = 440
-duration = 1
-t = np.linspace(0, duration, 44100)
-note = np.sin(2*np.pi*freq*t)
-note = note.astype(np.float32).tobytes()
-
-
-stream = p.open(format=pa.paFloat32,
-                channels=1,
-                rate=44100,
-                frames_per_buffer=1024,
-                output=True,
-                )
-stream.write(note)
-stream.stop_stream()
-stream.close()
-p.terminate()
+pg.quit()
