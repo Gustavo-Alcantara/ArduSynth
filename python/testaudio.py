@@ -8,15 +8,19 @@ fps = 60
 screen = pg.display.set_mode([800,640])
 pg.display.set_caption("Synthesizer")
 
-keys = ['a','s','d','f','g','h','j']
-files = ["C4","D4","E4","F4","G4","A4","B4"]
-notes = []
+keys = ['a','s','d','f','g','h','j','k']
+files_piano = ["C4","D4","E4","F4","G4","A4","B4","C5"]
+files_drum = ["kick1","cl_hihat","snare","tom1","handclap","hightom","claves","open_hh"]
+notes_piano = []
+notes_drum = []
 pressed = []
 
-for f in files:
-    notes.append(mixer.Sound(f'python/assets/{f}.wav'))
+for f in files_piano:
+    notes_piano.append(mixer.Sound(f'python/assets/piano/{f}.wav'))
+for f in files_drum:
+    notes_drum.append(mixer.Sound(f'python/assets/drum/{f}.wav'))
 
-
+notes = notes_drum
 while True:
     timer.tick(fps)
     screen.fill('black')
